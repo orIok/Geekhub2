@@ -1,6 +1,7 @@
 package com.nemyrovskiy.o.gh2_nemyrovskyi;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.ListFragment;
 import android.view.View;
@@ -8,6 +9,7 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
 import com.nemyrovskiy.o.gh2_nemyrovskyi.UI.DummyContent;
+import com.nemyrovskiy.o.gh2_nemyrovskyi.data.WeatherDetail;
 
 public class ItemListFragment extends ListFragment {
 
@@ -17,6 +19,7 @@ public class ItemListFragment extends ListFragment {
         public void onItemSelected(String id) {
         }
     };
+
     private Callbacks mCallbacks = sDummyCallbacks;
     private int mActivatedPosition = ListView.INVALID_POSITION;
 
@@ -27,6 +30,10 @@ public class ItemListFragment extends ListFragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Weather weather = new Weather();
+
+        Intent i = getActivity().getIntent();
+        WeatherDetail wd = (WeatherDetail) i.getSerializableExtra("weather");
+
 
 
         setListAdapter(new ArrayAdapter<String>(
@@ -44,6 +51,7 @@ public class ItemListFragment extends ListFragment {
             setActivatedPosition(savedInstanceState.getInt(STATE_ACTIVATED_POSITION));
         }
     }
+
 
     @Override
     public void onAttach(Activity activity) {
@@ -96,4 +104,5 @@ public class ItemListFragment extends ListFragment {
     public interface Callbacks {
         public void onItemSelected(String id);
     }
+
 }
