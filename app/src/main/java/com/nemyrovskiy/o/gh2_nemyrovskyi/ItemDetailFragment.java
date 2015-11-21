@@ -8,6 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -27,9 +28,9 @@ public class ItemDetailFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        /*Gson gson = new GsonBuilder().create();
+        Gson gson = new GsonBuilder().create();
         Bundle bundle = getActivity().getIntent().getExtras();
-        WeatherDetail wd = gson.fromJson(bundle.getString(ITEM), WeatherDetail.class);*/
+        WeatherDetail wd = gson.fromJson(bundle.getString(ITEM), WeatherDetail.class);
 
 
 
@@ -38,9 +39,9 @@ public class ItemDetailFragment extends Fragment {
 
             Activity activity = this.getActivity();
             CollapsingToolbarLayout appBarLayout = (CollapsingToolbarLayout) activity.findViewById(R.id.toolbar_layout);
-            /*if (appBarLayout != null) {
+            if (appBarLayout != null) {
                 appBarLayout.setTitle(wd.city.name);
-            }*/
+            }
         }
     }
 
@@ -52,9 +53,9 @@ public class ItemDetailFragment extends Fragment {
         Gson gson = new GsonBuilder().create();
         Bundle bundle = getActivity().getIntent().getExtras();
         WeatherDetail wd = gson.fromJson(bundle.getString(ITEM), WeatherDetail.class);
-        /*Toast.makeText(getActivity().getApplicationContext(), wd.city.name, Toast.LENGTH_SHORT);*/
+        Toast.makeText(getActivity().getApplicationContext(), bundle.getString(ARG_ITEM_ID), Toast.LENGTH_SHORT).show();
         if (mItem != null) {
-            ((TextView) rootView.findViewById(R.id.item_detail)).setText(wd.city.name);
+            ((TextView) rootView.findViewById(R.id.item_detail)).setText(wd.city.name + wd.weathers[Integer.parseInt(bundle.getString(ARG_ITEM_ID))].dtTxt);
         }
 
         return rootView;
