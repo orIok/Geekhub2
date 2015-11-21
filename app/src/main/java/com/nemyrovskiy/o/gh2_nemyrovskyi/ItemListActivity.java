@@ -5,11 +5,8 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.JsonHttpResponseHandler;
-import com.nemyrovskiy.o.gh2_nemyrovskyi.data.WeatherDetail;
 
 import org.json.JSONObject;
 
@@ -19,7 +16,7 @@ public class ItemListActivity extends AppCompatActivity
         implements ItemListFragment.Callbacks {
 
     private boolean mTwoPane;
-
+    private String downloadingData;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,30 +27,18 @@ public class ItemListActivity extends AppCompatActivity
         setSupportActionBar(toolbar);
         toolbar.setTitle(getTitle());
 
-//   data downloading
 
+//   downloadingData downloading
         AsyncHttpClient client = new AsyncHttpClient();
-        client.get("http://api.openweathermap.org/data/2.5" +
-                        "/forecast/daily?id=710791&cnt=5&APPID=9d70098450b4c46c2d771915f7b389ff",
+        client.get("http://api.openweathermap.org/data/2.5/forecast?id=710791&APPID=9d70098450b4c46c2d771915f7b389ff",
                 new JsonHttpResponseHandler() {
-
                     @Override
                     public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
                         super.onSuccess(statusCode, headers, response);
-
-                        GsonBuilder builder = new GsonBuilder();
-                        Gson gson = builder.create();
-                        WeatherDetail wd = gson.fromJson(response.toString(), WeatherDetail.class);
-                        Intent d = new Intent();
-                        d.putExtra(ItemDetailFragment.ITEM, wd);
-
+                        downloadingData = response.toString();
+                        /*Toast.makeText(getApplicationContext(), downloadingData, Toast.LENGTH_SHORT).show();*/
                     }
-
-
                 });
-        // finish downloading
-
-
 
         if (findViewById(R.id.item_detail_container) != null) {
             mTwoPane = true;
@@ -61,16 +46,14 @@ public class ItemListActivity extends AppCompatActivity
                     .findFragmentById(R.id.item_list))
                     .setActivateOnItemClick(true);
         }
-
-
     }
-
 
     @Override
     public void onItemSelected(String id) {
         if (mTwoPane) {
             Bundle arguments = new Bundle();
             arguments.putString(ItemDetailFragment.ARG_ITEM_ID, id);
+            arguments.putString(ItemDetailFragment.ITEM, downloadingData);
             ItemDetailFragment fragment = new ItemDetailFragment();
             fragment.setArguments(arguments);
             getSupportFragmentManager().beginTransaction()
@@ -80,6 +63,7 @@ public class ItemListActivity extends AppCompatActivity
         } else {
             Intent detailIntent = new Intent(this, ItemDetailActivity.class);
             detailIntent.putExtra(ItemDetailFragment.ARG_ITEM_ID, id);
+            detailIntent.putExtra(ItemDetailFragment.ITEM, downloadingData);
             startActivity(detailIntent);
         }
 

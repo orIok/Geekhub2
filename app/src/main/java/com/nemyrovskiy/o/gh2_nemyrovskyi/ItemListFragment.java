@@ -1,7 +1,6 @@
 package com.nemyrovskiy.o.gh2_nemyrovskyi;
 
 import android.app.Activity;
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.ListFragment;
 import android.view.View;
@@ -9,9 +8,9 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
 import com.nemyrovskiy.o.gh2_nemyrovskyi.UI.DummyContent;
-import com.nemyrovskiy.o.gh2_nemyrovskyi.data.WeatherDetail;
 
 public class ItemListFragment extends ListFragment {
+
 
     private static final String STATE_ACTIVATED_POSITION = "activated_position";
     private static Callbacks sDummyCallbacks = new Callbacks() {
@@ -26,13 +25,11 @@ public class ItemListFragment extends ListFragment {
     public ItemListFragment() {
     }
 
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Weather weather = new Weather();
-
-        Intent i = getActivity().getIntent();
-        WeatherDetail wd = (WeatherDetail) i.getSerializableExtra("weather");
 
 
 
