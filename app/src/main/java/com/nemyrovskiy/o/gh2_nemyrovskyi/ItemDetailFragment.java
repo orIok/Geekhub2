@@ -14,6 +14,8 @@ import com.google.gson.GsonBuilder;
 import com.nemyrovskiy.o.gh2_nemyrovskyi.UI.DummyContent;
 import com.nemyrovskiy.o.gh2_nemyrovskyi.data.WeatherDetail;
 
+import java.util.Calendar;
+
 public class ItemDetailFragment extends Fragment {
     public static final String ARG_ITEM_ID = "item_id";
     public static final String ITEM = "weather_item";
@@ -52,10 +54,14 @@ public class ItemDetailFragment extends Fragment {
         Gson gson = new GsonBuilder().create();
         Bundle bundle = getActivity().getIntent().getExtras();
         WeatherDetail wd = gson.fromJson(bundle.getString(ITEM), WeatherDetail.class);
+
+        java.util.GregorianCalendar cal = new java.util.GregorianCalendar();
+        String curentDay = cal.getDisplayName(Calendar.DAY_OF_WEEK, Calendar.SHORT, java.util.Locale.ENGLISH);
         /*Toast.makeText(getActivity().getApplicationContext(), bundle.getString(ARG_ITEM_ID), Toast.LENGTH_SHORT).show();*/
 
         if (mItem != null) {
-            ((TextView) rootView.findViewById(R.id.item_detail)).setText(wd.city.name + " " + wd.weathers[Integer.parseInt(bundle.getString(ARG_ITEM_ID))].dtTxt);
+            ((TextView) rootView.findViewById(R.id.item_detail)).
+                    setText("Data: " + wd.weathers[Integer.parseInt(bundle.getString(ARG_ITEM_ID))].dtTxt + " curent day: " + curentDay + " temp: ");
         }
 
         return rootView;

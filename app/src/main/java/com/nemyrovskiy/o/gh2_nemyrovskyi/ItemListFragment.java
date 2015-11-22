@@ -15,8 +15,6 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.nemyrovskiy.o.gh2_nemyrovskyi.UI.DummyContent;
 
-import java.util.Calendar;
-
 public class ItemListFragment extends ListFragment {
 
 
@@ -47,13 +45,13 @@ public class ItemListFragment extends ListFragment {
         /*WeatherDetail wd = gson.fromJson(bundle.getString(ItemDetailFragment.ITEM), WeatherDetail.class);*/
         /*Toast.makeText(getActivity().getApplicationContext(), ss, Toast.LENGTH_SHORT).show();*/
 
-       /* setListAdapter(new ArrayAdapter<String>(
+        setListAdapter(new ArrayAdapter<String>(
                 getActivity(),
                 android.R.layout.simple_list_item_activated_1,
                 android.R.id.text1,
-                weatherDummy.dataS));*/
-        WeatherAdapter adapter = new WeatherAdapter(getActivity(), weatherDummy.dataS);
-        setListAdapter(adapter);
+                weatherDummy.dataS));
+        /*WeatherAdapter adapter = new WeatherAdapter(getActivity(), weatherDummy.dataS);
+        setListAdapter(adapter);*/
 
     }
 
@@ -137,10 +135,6 @@ public class ItemListFragment extends ListFragment {
 
         @Override
         public View getView(int position, View convertView, final ViewGroup parent) {
-
-            java.util.GregorianCalendar cal = new java.util.GregorianCalendar();
-            String s = cal.getDisplayName(Calendar.DAY_OF_WEEK, Calendar.SHORT, java.util.Locale.ENGLISH);
-
 
             LayoutInflater inflater = (LayoutInflater) context
                     .getSystemService(Context.LAYOUT_INFLATER_SERVICE);

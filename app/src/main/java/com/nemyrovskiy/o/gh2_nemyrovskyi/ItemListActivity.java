@@ -10,8 +10,6 @@ import com.loopj.android.http.JsonHttpResponseHandler;
 
 import org.json.JSONObject;
 
-import java.util.Calendar;
-
 import cz.msebera.android.httpclient.Header;
 
 public class ItemListActivity extends AppCompatActivity
@@ -52,9 +50,6 @@ public class ItemListActivity extends AppCompatActivity
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         toolbar.setTitle(getTitle());
-
-        java.util.GregorianCalendar cal = new java.util.GregorianCalendar();
-        cal.getDisplayName(Calendar.DAY_OF_WEEK, Calendar.SHORT, java.util.Locale.ENGLISH);
 
 
         if (findViewById(R.id.item_detail_container) != null) {

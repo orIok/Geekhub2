@@ -13,4 +13,5 @@ public class WeatherDetail implements Serializable {
     public double message;
     @SerializedName("list")
     public Weather[] weathers;
+
 }

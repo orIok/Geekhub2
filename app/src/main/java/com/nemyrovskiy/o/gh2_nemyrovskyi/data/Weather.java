@@ -36,9 +36,7 @@ public class Weather implements Serializable {
         @SerializedName("temp_kf")
         public double tempKf;
 
-        public double getTemp() {
-            return tempMin;
-        }
+
     }
 
     public class WeatherDetails implements Serializable {
