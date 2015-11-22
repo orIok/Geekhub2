@@ -54,9 +54,7 @@ public class ItemListActivity extends AppCompatActivity
 
         if (findViewById(R.id.item_detail_container) != null) {
             mTwoPane = true;
-            ((ItemListFragment) getSupportFragmentManager()
-                    .findFragmentById(R.id.item_list))
-                    .setActivateOnItemClick(true);
+            ((ItemListFragment) getSupportFragmentManager().findFragmentById(R.id.item_list)).setActivateOnItemClick(true);
         }
 
 

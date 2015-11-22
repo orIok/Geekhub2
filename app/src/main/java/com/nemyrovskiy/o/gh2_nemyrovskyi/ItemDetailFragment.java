@@ -57,11 +57,15 @@ public class ItemDetailFragment extends Fragment {
 
         java.util.GregorianCalendar cal = new java.util.GregorianCalendar();
         String curentDay = cal.getDisplayName(Calendar.DAY_OF_WEEK, Calendar.SHORT, java.util.Locale.ENGLISH);
-        /*Toast.makeText(getActivity().getApplicationContext(), bundle.getString(ARG_ITEM_ID), Toast.LENGTH_SHORT).show();*/
+
 
         if (mItem != null) {
             ((TextView) rootView.findViewById(R.id.item_detail)).
-                    setText("Data: " + wd.weathers[Integer.parseInt(bundle.getString(ARG_ITEM_ID))].dtTxt + " curent day: " + curentDay + " temp: ");
+                    setText("Data: " + wd.weathers[Integer.parseInt(bundle.getString(ARG_ITEM_ID))].
+                            dtTxt + " curent day: " + curentDay + " temp: " +
+                            wd.weathers[Integer.parseInt(bundle.getString(ARG_ITEM_ID))].main.tempMax
+                            + " wind speed: " + wd.weathers[Integer.parseInt(bundle.getString(ARG_ITEM_ID))].wind.speed
+                            + " dwg: " + wd.weathers[Integer.parseInt(bundle.getString(ARG_ITEM_ID))].wind.deg);
         }
 
         return rootView;
