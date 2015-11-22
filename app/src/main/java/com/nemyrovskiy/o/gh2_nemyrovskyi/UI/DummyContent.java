@@ -13,7 +13,7 @@ import java.util.Map;
  */
 public class DummyContent {
 
-    private static final int COUNT = 25;
+    private static final int COUNT = 40;
     /**
      * An array of sample (dummy) items.
      */

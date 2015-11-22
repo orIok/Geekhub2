@@ -1,13 +1,21 @@
 package com.nemyrovskiy.o.gh2_nemyrovskyi;
 
 import android.app.Activity;
+import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.ListFragment;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.TextView;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.nemyrovskiy.o.gh2_nemyrovskyi.UI.DummyContent;
+
+import java.util.Calendar;
 
 public class ItemListFragment extends ListFragment {
 
@@ -18,27 +26,37 @@ public class ItemListFragment extends ListFragment {
         public void onItemSelected(String id) {
         }
     };
-
     private Callbacks mCallbacks = sDummyCallbacks;
     private int mActivatedPosition = ListView.INVALID_POSITION;
-
-    public ItemListFragment() {
-    }
-
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Weather weather = new Weather();
+
+        WeatherDummy weatherDummy = new WeatherDummy();
 
 
+        Gson gson = new GsonBuilder().create();
+        Bundle bundle = getActivity().getIntent().getExtras();
 
-        setListAdapter(new ArrayAdapter<String>(
+       /* do {
+            if (bundle.getString(ItemDetailFragment.ITEM) != null) {
+                String ss = bundle.getString(ItemDetailFragment.ITEM);
+            }
+        }  while (ItemDetailFragment.ITEM == null);*/
+        /*WeatherDetail wd = gson.fromJson(bundle.getString(ItemDetailFragment.ITEM), WeatherDetail.class);*/
+        /*Toast.makeText(getActivity().getApplicationContext(), ss, Toast.LENGTH_SHORT).show();*/
+
+       /* setListAdapter(new ArrayAdapter<String>(
                 getActivity(),
                 android.R.layout.simple_list_item_activated_1,
                 android.R.id.text1,
-                weather.dataS));
+                weatherDummy.dataS));*/
+        WeatherAdapter adapter = new WeatherAdapter(getActivity(), weatherDummy.dataS);
+        setListAdapter(adapter);
+
     }
+
 
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
@@ -47,6 +65,7 @@ public class ItemListFragment extends ListFragment {
                 && savedInstanceState.containsKey(STATE_ACTIVATED_POSITION)) {
             setActivatedPosition(savedInstanceState.getInt(STATE_ACTIVATED_POSITION));
         }
+
     }
 
 
@@ -101,5 +120,45 @@ public class ItemListFragment extends ListFragment {
     public interface Callbacks {
         public void onItemSelected(String id);
     }
+
+    // adapter
+    //**
+    //**
+    //**
+    public class WeatherAdapter extends ArrayAdapter<String> {
+        private final Context context;
+        private final String[] values;
+
+        public WeatherAdapter(Context context, String[] values) {
+            super(context, R.layout.rowlayout, values);
+            this.context = context;
+            this.values = values;
+        }
+
+        @Override
+        public View getView(int position, View convertView, final ViewGroup parent) {
+
+            java.util.GregorianCalendar cal = new java.util.GregorianCalendar();
+            String s = cal.getDisplayName(Calendar.DAY_OF_WEEK, Calendar.SHORT, java.util.Locale.ENGLISH);
+
+
+            LayoutInflater inflater = (LayoutInflater) context
+                    .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+            View rowView = inflater.inflate(R.layout.rowlayout, parent, false);
+            TextView textView1 = (TextView) rowView.findViewById(R.id.day_name);
+            textView1.setText(values[position]);
+
+
+           /*
+            Toast.makeText(getActivity().getApplicationContext(), wd.city.name, Toast.LENGTH_SHORT).show();*/
+
+            // доплити іконку
+            /*imageView.setImageResource(R.drawable.);*/
+
+
+            return rowView;
+        }
+    }
+
 
 }

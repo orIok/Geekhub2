@@ -10,6 +10,8 @@ import com.loopj.android.http.JsonHttpResponseHandler;
 
 import org.json.JSONObject;
 
+import java.util.Calendar;
+
 import cz.msebera.android.httpclient.Header;
 
 public class ItemListActivity extends AppCompatActivity
@@ -20,15 +22,8 @@ public class ItemListActivity extends AppCompatActivity
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_item_app_bar);
 
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-        toolbar.setTitle(getTitle());
-
-
-//   downloadingData downloading
+        //   downloadingData downloading
         AsyncHttpClient client = new AsyncHttpClient();
         client.get("http://api.openweathermap.org/data/2.5/forecast?id=710791&APPID=9d70098450b4c46c2d771915f7b389ff",
                 new JsonHttpResponseHandler() {
@@ -36,9 +31,31 @@ public class ItemListActivity extends AppCompatActivity
                     public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
                         super.onSuccess(statusCode, headers, response);
                         downloadingData = response.toString();
+
+                        //start list fragment
+                        Bundle arguments = new Bundle();
+                        arguments.putString(ItemDetailFragment.ITEM, downloadingData);
+                        ItemListFragment fragment = new ItemListFragment();
+                        fragment.setArguments(arguments);
+                        getSupportFragmentManager().beginTransaction()
+                                .replace(R.id.item_list, fragment)
+                                .commit();
                         /*Toast.makeText(getApplicationContext(), downloadingData, Toast.LENGTH_SHORT).show();*/
                     }
                 });
+
+
+
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_item_app_bar);
+
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        toolbar.setTitle(getTitle());
+
+        java.util.GregorianCalendar cal = new java.util.GregorianCalendar();
+        cal.getDisplayName(Calendar.DAY_OF_WEEK, Calendar.SHORT, java.util.Locale.ENGLISH);
+
 
         if (findViewById(R.id.item_detail_container) != null) {
             mTwoPane = true;
@@ -46,6 +63,8 @@ public class ItemListActivity extends AppCompatActivity
                     .findFragmentById(R.id.item_list))
                     .setActivateOnItemClick(true);
         }
+
+
     }
 
     @Override
@@ -64,6 +83,7 @@ public class ItemListActivity extends AppCompatActivity
             Intent detailIntent = new Intent(this, ItemDetailActivity.class);
             detailIntent.putExtra(ItemDetailFragment.ARG_ITEM_ID, id);
             detailIntent.putExtra(ItemDetailFragment.ITEM, downloadingData);
+
             startActivity(detailIntent);
         }
 

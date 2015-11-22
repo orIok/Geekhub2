@@ -17,6 +17,7 @@ public class Weather implements Serializable {
     @SerializedName("dt_txt")
     public String dtTxt;
 
+
     public class WeatherMain implements Serializable {
         @SerializedName("temp")
         public double temp;
@@ -34,6 +35,10 @@ public class Weather implements Serializable {
         public double humidity;
         @SerializedName("temp_kf")
         public double tempKf;
+
+        public double getTemp() {
+            return tempMin;
+        }
     }
 
     public class WeatherDetails implements Serializable {
@@ -54,4 +59,6 @@ public class Weather implements Serializable {
         @SerializedName("deg")
         public double deg;
     }
+
+
 }

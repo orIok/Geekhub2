@@ -8,7 +8,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -53,9 +52,10 @@ public class ItemDetailFragment extends Fragment {
         Gson gson = new GsonBuilder().create();
         Bundle bundle = getActivity().getIntent().getExtras();
         WeatherDetail wd = gson.fromJson(bundle.getString(ITEM), WeatherDetail.class);
-        Toast.makeText(getActivity().getApplicationContext(), bundle.getString(ARG_ITEM_ID), Toast.LENGTH_SHORT).show();
+        /*Toast.makeText(getActivity().getApplicationContext(), bundle.getString(ARG_ITEM_ID), Toast.LENGTH_SHORT).show();*/
+
         if (mItem != null) {
-            ((TextView) rootView.findViewById(R.id.item_detail)).setText(wd.city.name + wd.weathers[Integer.parseInt(bundle.getString(ARG_ITEM_ID))].dtTxt);
+            ((TextView) rootView.findViewById(R.id.item_detail)).setText(wd.city.name + " " + wd.weathers[Integer.parseInt(bundle.getString(ARG_ITEM_ID))].dtTxt);
         }
 
         return rootView;
