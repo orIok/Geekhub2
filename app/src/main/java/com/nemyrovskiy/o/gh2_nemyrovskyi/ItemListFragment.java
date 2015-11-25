@@ -8,15 +8,16 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.nemyrovskiy.o.gh2_nemyrovskyi.UI.DummyContent;
+import com.nemyrovskiy.o.gh2_nemyrovskyi.data.WeatherDetail;
 
 public class ItemListFragment extends ListFragment {
-
 
     private static final String STATE_ACTIVATED_POSITION = "activated_position";
     private static Callbacks sDummyCallbacks = new Callbacks() {
@@ -24,34 +25,34 @@ public class ItemListFragment extends ListFragment {
         public void onItemSelected(String id) {
         }
     };
+    WeatherDetail wd = new WeatherDetail();
     private Callbacks mCallbacks = sDummyCallbacks;
     private int mActivatedPosition = ListView.INVALID_POSITION;
+    private String downloadingData;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         WeatherDummy weatherDummy = new WeatherDummy();
-
-
         Gson gson = new GsonBuilder().create();
-        Bundle bundle = getActivity().getIntent().getExtras();
+        Bundle bundle = getArguments();
+        wd = gson.fromJson(bundle.getString(ItemDetailFragment.ITEM), WeatherDetail.class);
 
-       /* do {
-            if (bundle.getString(ItemDetailFragment.ITEM) != null) {
-                String ss = bundle.getString(ItemDetailFragment.ITEM);
-            }
-        }  while (ItemDetailFragment.ITEM == null);*/
-        /*WeatherDetail wd = gson.fromJson(bundle.getString(ItemDetailFragment.ITEM), WeatherDetail.class);*/
-        /*Toast.makeText(getActivity().getApplicationContext(), ss, Toast.LENGTH_SHORT).show();*/
-
-        setListAdapter(new ArrayAdapter<String>(
+        /*setListAdapter(new ArrayAdapter<String>(
                 getActivity(),
                 android.R.layout.simple_list_item_activated_1,
                 android.R.id.text1,
-                weatherDummy.dataS));
-        /*WeatherAdapter adapter = new WeatherAdapter(getActivity(), weatherDummy.dataS);
-        setListAdapter(adapter);*/
+                weatherDummy.dataS));*/
+
+
+        WeatherAdapter adapter = new WeatherAdapter(getActivity(), weatherDummy.dataS);
+        setListAdapter(adapter);
+
+       /* Gson gson = new GsonBuilder().create();
+        WeatherDetail wd = gson.fromJson(downloadingData, WeatherDetail.class);*/
+
+
 
     }
 
@@ -139,17 +140,16 @@ public class ItemListFragment extends ListFragment {
             LayoutInflater inflater = (LayoutInflater) context
                     .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             View rowView = inflater.inflate(R.layout.rowlayout, parent, false);
-            TextView textView1 = (TextView) rowView.findViewById(R.id.day_name);
-            textView1.setText(values[position]);
 
+            TextView textView1 = (TextView) rowView.findViewById(R.id.data);
+            TextView textView2 = (TextView) rowView.findViewById(R.id.weather);
+            TextView textView3 = (TextView) rowView.findViewById(R.id.temperature);
+            ImageView imageView = (ImageView) rowView.findViewById(R.id.icon);
+            /* imageView.setImageResource(R.drawable);*/
 
-           /*
-            Toast.makeText(getActivity().getApplicationContext(), wd.city.name, Toast.LENGTH_SHORT).show();*/
-
-            // доплити іконку
-            /*imageView.setImageResource(R.drawable.);*/
-
-
+            textView1.setText(wd.weathers[position].dtTxt);
+            textView2.setText(wd.weathers[position].details[0].description);
+            textView3.setText(Double.toString(Math.round(wd.weathers[position].main.tempMin - 273.15)) + " t°");
             return rowView;
         }
     }

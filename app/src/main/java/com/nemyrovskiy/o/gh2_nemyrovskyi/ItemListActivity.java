@@ -15,8 +15,8 @@ import cz.msebera.android.httpclient.Header;
 public class ItemListActivity extends AppCompatActivity
         implements ItemListFragment.Callbacks {
 
+    public String downloadingData;
     private boolean mTwoPane;
-    private String downloadingData;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,7 +30,6 @@ public class ItemListActivity extends AppCompatActivity
                         super.onSuccess(statusCode, headers, response);
                         downloadingData = response.toString();
 
-                        //start list fragment
                         Bundle arguments = new Bundle();
                         arguments.putString(ItemDetailFragment.ITEM, downloadingData);
                         ItemListFragment fragment = new ItemListFragment();
@@ -60,9 +59,12 @@ public class ItemListActivity extends AppCompatActivity
 
     }
 
+
     @Override
     public void onItemSelected(String id) {
         if (mTwoPane) {
+
+
             Bundle arguments = new Bundle();
             arguments.putString(ItemDetailFragment.ARG_ITEM_ID, id);
             arguments.putString(ItemDetailFragment.ITEM, downloadingData);
