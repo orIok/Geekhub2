@@ -1,9 +1,14 @@
 package com.nemyrovskiy.o.gh2_nemyrovskyi;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.net.ConnectivityManager;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.widget.Toast;
 
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.JsonHttpResponseHandler;
@@ -15,31 +20,53 @@ import cz.msebera.android.httpclient.Header;
 public class ItemListActivity extends AppCompatActivity
         implements ItemListFragment.Callbacks {
 
+    public final String dataSPreferences = "SPREFERENCES_DATA";
     public String downloadingData;
     private boolean mTwoPane;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
-        //   downloadingData downloading
-        AsyncHttpClient client = new AsyncHttpClient();
-        client.get("http://api.openweathermap.org/data/2.5/forecast?id=710791&APPID=9d70098450b4c46c2d771915f7b389ff",
-                new JsonHttpResponseHandler() {
-                    @Override
-                    public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
-                        super.onSuccess(statusCode, headers, response);
-                        downloadingData = response.toString();
+        if (isNetworkAvailable(getApplicationContext())) {
+            //   downloadingData downloading
+            AsyncHttpClient client = new AsyncHttpClient();
+            client.get("http://api.openweathermap.org/data/2.5/forecast?id=710791&APPID=9d70098450b4c46c2d771915f7b389ff",
+                    new JsonHttpResponseHandler() {
+                        @Override
+                        public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+                            super.onSuccess(statusCode, headers, response);
+                            downloadingData = response.toString();
 
-                        Bundle arguments = new Bundle();
-                        arguments.putString(ItemDetailFragment.ITEM, downloadingData);
-                        ItemListFragment fragment = new ItemListFragment();
-                        fragment.setArguments(arguments);
-                        getSupportFragmentManager().beginTransaction()
-                                .replace(R.id.item_list, fragment)
-                                .commit();
-                        /*Toast.makeText(getApplicationContext(), downloadingData, Toast.LENGTH_SHORT).show();*/
-                    }
-                });
+                            Bundle arguments = new Bundle();
+                            arguments.putString(ItemDetailFragment.ITEM, downloadingData);
+                            arguments.putInt(ItemDetailFragment.INTERNET_CONNECTION, 0);
+                            ItemListFragment fragment = new ItemListFragment();
+                            fragment.setArguments(arguments);
+                            getSupportFragmentManager().beginTransaction()
+                                    .replace(R.id.item_list, fragment)
+                                    .commit();
+
+                            SharedPreferences preferences = PreferenceManager.
+                                    getDefaultSharedPreferences(ItemListActivity.this);
+                            preferences.edit().putString(dataSPreferences, downloadingData).apply();
+                        }
+                    });
+        } else {
+
+            String dData = PreferenceManager.getDefaultSharedPreferences(getApplicationContext()).getString(dataSPreferences, "null");
+            Toast.makeText(getApplicationContext(), dData, Toast.LENGTH_SHORT).show();
+            Bundle arguments = new Bundle();
+            arguments.putString(ItemDetailFragment.ITEM, dData);
+            arguments.putInt(ItemDetailFragment.INTERNET_CONNECTION, 0);
+            ItemListFragment fragment = new ItemListFragment();
+            fragment.setArguments(arguments);
+            getSupportFragmentManager().beginTransaction()
+                    .replace(R.id.item_list, fragment)
+                    .commit();
+        }
+
+
+
 
 
 
@@ -80,7 +107,13 @@ public class ItemListActivity extends AppCompatActivity
             detailIntent.putExtra(ItemDetailFragment.ITEM, downloadingData);
 
             startActivity(detailIntent);
+
         }
 
+    }
+
+    public boolean isNetworkAvailable(final Context context) {
+        final ConnectivityManager connectivityManager = ((ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE));
+        return connectivityManager.getActiveNetworkInfo() != null && connectivityManager.getActiveNetworkInfo().isConnected();
     }
 }

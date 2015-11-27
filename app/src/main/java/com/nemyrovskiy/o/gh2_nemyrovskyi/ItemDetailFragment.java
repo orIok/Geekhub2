@@ -19,6 +19,7 @@ import java.util.Calendar;
 public class ItemDetailFragment extends Fragment {
     public static final String ARG_ITEM_ID = "item_id";
     public static final String ITEM = "weather_item";
+    public static final String INTERNET_CONNECTION = "internet_connection";
 
     private DummyContent.DummyItem mItem;
 

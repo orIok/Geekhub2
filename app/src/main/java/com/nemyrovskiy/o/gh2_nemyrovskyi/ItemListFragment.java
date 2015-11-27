@@ -17,6 +17,12 @@ import com.google.gson.GsonBuilder;
 import com.nemyrovskiy.o.gh2_nemyrovskyi.UI.DummyContent;
 import com.nemyrovskiy.o.gh2_nemyrovskyi.data.WeatherDetail;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.Locale;
+
 public class ItemListFragment extends ListFragment {
 
     private static final String STATE_ACTIVATED_POSITION = "activated_position";
@@ -28,7 +34,6 @@ public class ItemListFragment extends ListFragment {
     WeatherDetail wd = new WeatherDetail();
     private Callbacks mCallbacks = sDummyCallbacks;
     private int mActivatedPosition = ListView.INVALID_POSITION;
-    private String downloadingData;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -38,6 +43,8 @@ public class ItemListFragment extends ListFragment {
         Gson gson = new GsonBuilder().create();
         Bundle bundle = getArguments();
         wd = gson.fromJson(bundle.getString(ItemDetailFragment.ITEM), WeatherDetail.class);
+
+
 
         /*setListAdapter(new ArrayAdapter<String>(
                 getActivity(),
@@ -141,13 +148,33 @@ public class ItemListFragment extends ListFragment {
                     .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             View rowView = inflater.inflate(R.layout.rowlayout, parent, false);
 
+            String dateString = wd.weathers[position].dtTxt;
+            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.ENGLISH);
+            Date date = null;
+            try {
+                date = dateFormat.parse(dateString);
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+            Calendar cal = Calendar.getInstance();
+            if (date != null) {
+                cal.setTime(date);
+            }
+
+            String week = cal.getDisplayName(Calendar.DAY_OF_WEEK, Calendar.SHORT, Locale.ENGLISH);
+
             TextView textView1 = (TextView) rowView.findViewById(R.id.data);
+            TextView textView4 = (TextView) rowView.findViewById(R.id.day);
             TextView textView2 = (TextView) rowView.findViewById(R.id.weather);
             TextView textView3 = (TextView) rowView.findViewById(R.id.temperature);
             ImageView imageView = (ImageView) rowView.findViewById(R.id.icon);
+           /* Picasso.with(getContext()).load("http://i.imgur.com/DvpvklR.png").into(imageView);*/
             /* imageView.setImageResource(R.drawable);*/
 
             textView1.setText(wd.weathers[position].dtTxt);
+            textView4.setText(week);
+
+
             textView2.setText(wd.weathers[position].details[0].description);
             textView3.setText(Double.toString(Math.round(wd.weathers[position].main.tempMin - 273.15)) + " t°");
             return rowView;
