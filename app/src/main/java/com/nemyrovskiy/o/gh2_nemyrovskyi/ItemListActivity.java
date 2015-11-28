@@ -26,7 +26,6 @@ public class ItemListActivity extends AppCompatActivity
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
-
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_item_app_bar);
 
@@ -76,29 +75,14 @@ public class ItemListActivity extends AppCompatActivity
                     .commit();
         }
 
-
-
-
-
-
-
-
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         toolbar.setTitle(getTitle());
-
-
-
-
-
     }
-
 
     @Override
     public void onItemSelected(String id) {
         if (mTwoPane) {
-
-
             Bundle arguments = new Bundle();
             arguments.putString(ItemDetailFragment.ARG_ITEM_ID, id);
             arguments.putString(ItemDetailFragment.ITEM, realmData);
@@ -112,11 +96,8 @@ public class ItemListActivity extends AppCompatActivity
             Intent detailIntent = new Intent(this, ItemDetailActivity.class);
             detailIntent.putExtra(ItemDetailFragment.ARG_ITEM_ID, id);
             detailIntent.putExtra(ItemDetailFragment.ITEM, realmData);
-
             startActivity(detailIntent);
-
         }
-
     }
 
     public boolean isNetworkAvailable(final Context context) {

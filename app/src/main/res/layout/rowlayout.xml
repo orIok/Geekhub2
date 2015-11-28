@@ -30,17 +30,7 @@
         </TextView>
 
 
-        <!--
-            <ImageView
-                android:id="@+id/icon"
-                android:layout_width="60px"
-                android:layout_height="60px"
-                android:layout_alignParentBottom="true"
-                android:layout_marginLeft="4px"
-                android:layout_marginTop="4px"
-                android:src="@android:drawable/ic_dialog_info"
-                >
-            </ImageView>-->
+
 
 
     </RelativeLayout>
@@ -48,7 +38,7 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:orientation="vertical">
 
         <TextView
@@ -62,6 +52,17 @@
             >
         </TextView>
 
+        <ImageView
+            android:id="@+id/icon"
+            android:layout_width="150px"
+            android:layout_height="150px"
+            android:layout_alignParentRight="true"
+            android:layout_marginLeft="4px"
+            android:layout_marginTop="4px"
+            android:src="@android:drawable/ic_dialog_info"
+            >
+        </ImageView>
+
         <TextView
             android:id="@+id/weather"
             android:layout_width="wrap_content"
@@ -71,6 +72,8 @@
             android:text="SNOW"
             android:textSize="20sp">
         </TextView>
+
+
     </RelativeLayout>
 
 

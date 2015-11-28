@@ -40,9 +40,11 @@ public class ItemDetailFragment extends Fragment {
             mItem = DummyContent.ITEM_MAP.get(getArguments().getString(ARG_ITEM_ID));
 
             Activity activity = this.getActivity();
-            CollapsingToolbarLayout appBarLayout = (CollapsingToolbarLayout) activity.findViewById(R.id.toolbar_layout);
+            CollapsingToolbarLayout appBarLayout =
+                    (CollapsingToolbarLayout) activity.findViewById(R.id.toolbar_layout);
             if (appBarLayout != null) {
                 appBarLayout.setTitle(wd.city.name);
+
             }
         }
     }
@@ -57,16 +59,21 @@ public class ItemDetailFragment extends Fragment {
         WeatherDetail wd = gson.fromJson(bundle.getString(ITEM), WeatherDetail.class);
 
         java.util.GregorianCalendar cal = new java.util.GregorianCalendar();
-        String curentDay = cal.getDisplayName(Calendar.DAY_OF_WEEK, Calendar.SHORT, java.util.Locale.ENGLISH);
-
+        String data, deg, temp, windSpeed, curentDay;
+        int id = Integer.parseInt(bundle.getString(ARG_ITEM_ID));
+        curentDay = "curent day: " +
+                cal.getDisplayName(Calendar.DAY_OF_WEEK, Calendar.SHORT, java.util.Locale.ENGLISH)
+                + "\n";
+        data = "Date: " + wd.weathers[id].dtTxt + "\n";
+        deg = "deg: " + wd.weathers[id].wind.deg + "\n";
+        double tempDouble = wd.weathers[id].main.tempMax;
+        tempDouble = tempDouble - 273.15;
+        temp = "temp: " + Math.round(tempDouble) + " t°" + "\n";
+        windSpeed = "wind speed: " + wd.weathers[id].wind.speed + "\n";
 
         if (mItem != null) {
             ((TextView) rootView.findViewById(R.id.item_detail)).
-                    setText("Data: " + wd.weathers[Integer.parseInt(bundle.getString(ARG_ITEM_ID))].
-                            dtTxt + " curent day: " + curentDay + " temp: " +
-                            wd.weathers[Integer.parseInt(bundle.getString(ARG_ITEM_ID))].main.tempMax
-                            + " wind speed: " + wd.weathers[Integer.parseInt(bundle.getString(ARG_ITEM_ID))].wind.speed
-                            + " dwg: " + wd.weathers[Integer.parseInt(bundle.getString(ARG_ITEM_ID))].wind.deg);
+                    setText(data + curentDay + temp + windSpeed + deg);
         }
 
         return rootView;

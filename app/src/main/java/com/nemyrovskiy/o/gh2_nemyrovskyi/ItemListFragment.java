@@ -16,6 +16,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.nemyrovskiy.o.gh2_nemyrovskyi.UI.DummyContent;
 import com.nemyrovskiy.o.gh2_nemyrovskyi.data.WeatherDetail;
+import com.squareup.picasso.Picasso;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -168,15 +169,15 @@ public class ItemListFragment extends ListFragment {
             TextView textView2 = (TextView) rowView.findViewById(R.id.weather);
             TextView textView3 = (TextView) rowView.findViewById(R.id.temperature);
             ImageView imageView = (ImageView) rowView.findViewById(R.id.icon);
-           /* Picasso.with(getContext()).load("http://i.imgur.com/DvpvklR.png").into(imageView);*/
-            /* imageView.setImageResource(R.drawable);*/
+            String icon = wd.weathers[position].details[0].icon;
+            Picasso.with(getContext()).load("http://openweathermap.org/img/w/" + icon + ".png").resize(150, 150).into(imageView);
 
             textView1.setText(wd.weathers[position].dtTxt);
             textView4.setText(week);
 
 
             textView2.setText(wd.weathers[position].details[0].description);
-            textView3.setText(Double.toString(Math.round(wd.weathers[position].main.tempMin - 273.15)) + " t°");
+            textView3.setText(Math.round(wd.weathers[position].main.tempMin - 273.15) + " t°");
             return rowView;
         }
     }
