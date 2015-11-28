@@ -8,7 +8,6 @@ import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.widget.Toast;
 
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.JsonHttpResponseHandler;
@@ -21,11 +20,20 @@ public class ItemListActivity extends AppCompatActivity
         implements ItemListFragment.Callbacks {
 
     public final String dataSPreferences = "SPREFERENCES_DATA";
-    public String downloadingData;
+    public String downloadingData, realmData;
     private boolean mTwoPane;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
+
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_item_app_bar);
+
+        if (findViewById(R.id.item_detail_container) != null) {
+            mTwoPane = true;
+            ((ItemListFragment) getSupportFragmentManager().findFragmentById(R.id.item_list)).setActivateOnItemClick(true);
+        }
 
         if (isNetworkAvailable(getApplicationContext())) {
             //   downloadingData downloading
@@ -46,6 +54,8 @@ public class ItemListActivity extends AppCompatActivity
                                     .replace(R.id.item_list, fragment)
                                     .commit();
 
+                            realmData = downloadingData;
+
                             SharedPreferences preferences = PreferenceManager.
                                     getDefaultSharedPreferences(ItemListActivity.this);
                             preferences.edit().putString(dataSPreferences, downloadingData).apply();
@@ -54,7 +64,8 @@ public class ItemListActivity extends AppCompatActivity
         } else {
 
             String dData = PreferenceManager.getDefaultSharedPreferences(getApplicationContext()).getString(dataSPreferences, "null");
-            Toast.makeText(getApplicationContext(), dData, Toast.LENGTH_SHORT).show();
+            realmData = dData;
+            /*Toast.makeText(getApplicationContext(), dData, Toast.LENGTH_SHORT).show();*/
             Bundle arguments = new Bundle();
             arguments.putString(ItemDetailFragment.ITEM, dData);
             arguments.putInt(ItemDetailFragment.INTERNET_CONNECTION, 0);
@@ -70,18 +81,14 @@ public class ItemListActivity extends AppCompatActivity
 
 
 
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_item_app_bar);
+
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         toolbar.setTitle(getTitle());
 
 
-        if (findViewById(R.id.item_detail_container) != null) {
-            mTwoPane = true;
-            ((ItemListFragment) getSupportFragmentManager().findFragmentById(R.id.item_list)).setActivateOnItemClick(true);
-        }
+
 
 
     }
@@ -94,7 +101,7 @@ public class ItemListActivity extends AppCompatActivity
 
             Bundle arguments = new Bundle();
             arguments.putString(ItemDetailFragment.ARG_ITEM_ID, id);
-            arguments.putString(ItemDetailFragment.ITEM, downloadingData);
+            arguments.putString(ItemDetailFragment.ITEM, realmData);
             ItemDetailFragment fragment = new ItemDetailFragment();
             fragment.setArguments(arguments);
             getSupportFragmentManager().beginTransaction()
@@ -104,7 +111,7 @@ public class ItemListActivity extends AppCompatActivity
         } else {
             Intent detailIntent = new Intent(this, ItemDetailActivity.class);
             detailIntent.putExtra(ItemDetailFragment.ARG_ITEM_ID, id);
-            detailIntent.putExtra(ItemDetailFragment.ITEM, downloadingData);
+            detailIntent.putExtra(ItemDetailFragment.ITEM, realmData);
 
             startActivity(detailIntent);
 
