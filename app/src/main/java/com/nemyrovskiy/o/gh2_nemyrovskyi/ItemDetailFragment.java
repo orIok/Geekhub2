@@ -60,7 +60,7 @@ public class ItemDetailFragment extends Fragment {
 
         java.util.GregorianCalendar cal = new java.util.GregorianCalendar();
         String data, deg, temp, windSpeed, curentDay;
-        int id = Integer.parseInt(bundle.getString(ARG_ITEM_ID));
+        int id = Integer.parseInt(bundle.getString(ARG_ITEM_ID)) - 1;
         curentDay = "curent day: " +
                 cal.getDisplayName(Calendar.DAY_OF_WEEK, Calendar.SHORT, java.util.Locale.ENGLISH)
                 + "\n";

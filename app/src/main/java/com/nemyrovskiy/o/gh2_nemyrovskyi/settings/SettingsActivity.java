@@ -80,9 +80,9 @@ public class SettingsActivity extends AppCompatActivity {
     private void updateColor() {
         android.support.v7.app.ActionBar actionBar = getSupportActionBar();
         int colorStatusBar = getResources().getColor(PreferenceManager.
-                getDefaultSharedPreferences(this).getInt("colorS", android.R.color.background_dark));
+                getDefaultSharedPreferences(this).getInt("colorS", R.color.colorPrimaryDark));
         int colorActionBar = getResources().getColor(PreferenceManager.
-                getDefaultSharedPreferences(this).getInt("colorA", android.R.color.background_light));
+                getDefaultSharedPreferences(this).getInt("colorA", R.color.colorPrimary));
 
         if (actionBar != null) {
             actionBar.setBackgroundDrawable(new ColorDrawable(colorActionBar));
