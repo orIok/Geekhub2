@@ -3,14 +3,20 @@ package com.nemyrovskiy.o.gh2_nemyrovskyi;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.drawable.ColorDrawable;
 import android.net.ConnectivityManager;
+import android.os.Build;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.JsonHttpResponseHandler;
+import com.nemyrovskiy.o.gh2_nemyrovskyi.settings.SettingsActivity;
 
 import org.json.JSONObject;
 
@@ -28,6 +34,7 @@ public class ItemListActivity extends AppCompatActivity
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_item_app_bar);
+        updateColor();
 
         if (findViewById(R.id.item_detail_container) != null) {
             mTwoPane = true;
@@ -81,6 +88,26 @@ public class ItemListActivity extends AppCompatActivity
     }
 
     @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.settings, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle item selection
+        switch (item.getItemId()) {
+            case R.id.help:
+                Intent in = new Intent(this, SettingsActivity.class);
+                startActivity(in);
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
+
+    @Override
     public void onItemSelected(String id) {
         if (mTwoPane) {
             Bundle arguments = new Bundle();
@@ -103,5 +130,27 @@ public class ItemListActivity extends AppCompatActivity
     public boolean isNetworkAvailable(final Context context) {
         final ConnectivityManager connectivityManager = ((ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE));
         return connectivityManager.getActiveNetworkInfo() != null && connectivityManager.getActiveNetworkInfo().isConnected();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        updateColor();
+    }
+
+    private void updateColor() {
+        android.support.v7.app.ActionBar actionBar = getSupportActionBar();
+        int colorStatusBar = getResources().getColor(PreferenceManager.
+                getDefaultSharedPreferences(this).getInt("colorS", android.R.color.background_dark));
+        int colorActionBar = getResources().getColor(PreferenceManager.
+                getDefaultSharedPreferences(this).getInt("colorA", android.R.color.background_light));
+
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        if (toolbar != null) {
+            toolbar.setBackgroundDrawable(new ColorDrawable(colorActionBar));
+
+        }
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
+            getWindow().setStatusBarColor(colorStatusBar);
     }
 }

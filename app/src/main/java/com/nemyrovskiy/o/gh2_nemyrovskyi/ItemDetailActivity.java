@@ -1,7 +1,11 @@
 package com.nemyrovskiy.o.gh2_nemyrovskyi;
 
 import android.content.Intent;
+import android.graphics.drawable.ColorDrawable;
+import android.os.Build;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
+import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.v4.app.NavUtils;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -15,6 +19,7 @@ public class ItemDetailActivity extends AppCompatActivity {
         setContentView(R.layout.activity_item_detail);
         Toolbar toolbar = (Toolbar) findViewById(R.id.detail_toolbar);
         setSupportActionBar(toolbar);
+        updateColor();
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
@@ -38,5 +43,26 @@ public class ItemDetailActivity extends AppCompatActivity {
             return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    private void updateColor() {
+        android.support.v7.app.ActionBar actionBar = getSupportActionBar();
+        int colorStatusBar = getResources().getColor(PreferenceManager.
+                getDefaultSharedPreferences(this).getInt("colorS", android.R.color.background_dark));
+        int colorActionBar = getResources().getColor(PreferenceManager.
+                getDefaultSharedPreferences(this).getInt("colorA", android.R.color.background_light));
+
+        Toolbar toolbar = (Toolbar) findViewById(R.id.detail_toolbar);
+        CollapsingToolbarLayout cToolbar = (CollapsingToolbarLayout) findViewById(R.id.toolbar_layout);
+        if (toolbar != null) {
+            toolbar.setBackgroundDrawable(new ColorDrawable(colorActionBar));
+            cToolbar.setBackgroundDrawable(new ColorDrawable(colorActionBar));
+            if (Build.VERSION.SDK_INT >= 21) {
+                cToolbar.setForeground(new ColorDrawable(colorActionBar));
+            }
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
+                getWindow().setStatusBarColor(colorStatusBar);
+
+        }
     }
 }

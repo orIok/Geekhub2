@@ -1,4 +1,10 @@
 <resources>
     <string name="app_name">GH2-Nemyrovskyi</string>
     <string name="title_item_detail">Item Detail</string>
+    <string name="title_activity_settings">Settings</string>
+
+    <string name="color_blue">Blue</string>
+    <string name="color_brown">Brown</string>
+    <string name="color_orange">Orange</string>
+    <string name="chose_color">Chose color:</string>
 </resources>

@@ -3,4 +3,9 @@
     <color name="colorPrimary">#3F51B5</color>
     <color name="colorPrimaryDark">#303F9F</color>
     <color name="colorAccent">#FF4081</color>
+
+    <color name="colorBrownA">#795548</color>
+    <color name="colorBrownS">#5D4037</color>
+    <color name="colorOrangeA">#FF9800</color>
+    <color name="colorOrangeS">#F57C00</color>
 </resources>
