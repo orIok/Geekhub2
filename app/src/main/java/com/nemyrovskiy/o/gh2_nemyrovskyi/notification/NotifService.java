@@ -1,29 +1,20 @@
 package com.nemyrovskiy.o.gh2_nemyrovskyi.notification;
 
-import android.annotation.TargetApi;
-import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.Service;
+import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
-import android.os.Build;
 import android.os.IBinder;
-import android.preference.PreferenceManager;
+import android.support.v4.app.NotificationCompat;
 
-import com.loopj.android.http.AsyncHttpClient;
-import com.loopj.android.http.JsonHttpResponseHandler;
 import com.nemyrovskiy.o.gh2_nemyrovskyi.ItemListActivity;
 import com.nemyrovskiy.o.gh2_nemyrovskyi.R;
 
-import org.json.JSONObject;
-
 import java.util.concurrent.TimeUnit;
 
-import cz.msebera.android.httpclient.Header;
-
 public class NotifService extends Service {
-
+/*
     NotificationManager nm;
 
     String downloadingData;
@@ -58,49 +49,74 @@ public class NotifService extends Service {
     }
 
 
+
+
     @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
     void sendNotif() {
-
         Intent intent = new Intent(this, ItemListActivity.class);
         PendingIntent pIntent = PendingIntent.getActivity(this, 0, intent, 0);
+        Intent intentDownload = new Intent(this, UpdateWeather.class);
+        PendingIntent pendingIntentDownLoad = PendingIntent.getService(this, 0, intentDownload, 0);
 
         Notification notif = new Notification.Builder(getApplicationContext())
                 .setContentTitle("Update")
                 .setContentText("Update data for current information")
                 .setSmallIcon(R.drawable.logo)
                 .setContentIntent(pIntent)
-                .addAction(R.drawable.ic_sync_black_24dp, "Chek update", pIntent)
+                .addAction(R.drawable.ic_sync_black_24dp, "Chek update", pendingIntentDownLoad)
                 .build();
+
+        NotificationManager mNotificationManager;
+        mNotificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
 
         notif.flags |= Notification.FLAG_AUTO_CANCEL;
 
         nm.notify(1, notif);
+    }*/
+
+    private Intent intentDownload;
+    private Intent intentApp;
+    private android.support.v4.app.NotificationCompat.Builder builder;
+    private NotificationManager mNotificationManager;
+
+    public NotifService() {
     }
 
+    @Override
+    public IBinder onBind(Intent intent) {
+        throw new UnsupportedOperationException("Not yet implemented");
+    }
 
-    void updateDataButton() {
-        new Thread(new Runnable() {
+    @Override
+    public int onStartCommand(Intent intent, int flags, int startId) {
+        intentDownload = new Intent(this, UpdateWeather.class);
+        intentApp = new Intent(this, ItemListActivity.class);
+        PendingIntent pendingIntentDownLoad = PendingIntent.getService(this, 0, intentDownload, PendingIntent.FLAG_UPDATE_CURRENT);
+        PendingIntent pendingIntentApp = PendingIntent.getActivity(this, 0, intentApp, PendingIntent.FLAG_UPDATE_CURRENT);
+        builder = new NotificationCompat.Builder(this)
+                .setSmallIcon(R.drawable.logo)
+                .setContentText("Update data for curent information")
+                .setContentTitle("Update weather")
+                .setContentIntent(pendingIntentApp)
+                .addAction(R.drawable.ic_sync_black_24dp, "Update data", pendingIntentDownLoad);
+        mNotificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+
+        Thread thread = new Thread() {
+            @Override
             public void run() {
-
-                AsyncHttpClient client = new AsyncHttpClient();
-                client.get("http://api.openweathermap.org/data/2.5/forecast?id=710791&APPID=9d70098450b4c46c2d771915f7b389ff",
-                        new JsonHttpResponseHandler() {
-                            @Override
-                            public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
-                                super.onSuccess(statusCode, headers, response);
-
-                                downloadingData = response.toString();
-                                SharedPreferences preferences = PreferenceManager.
-                                        getDefaultSharedPreferences(NotifService.this);
-                                preferences.edit().putString(ItemListActivity.dataSPreferences, downloadingData).apply();
-                            }
-                        });
-
-                stopSelf();
-
+                while (true) {
+                    mNotificationManager.notify(1, builder.build());
+                    try {
+                        TimeUnit.SECONDS.sleep(60);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                }
             }
-        }).start();
+        };
+        thread.start();
 
-
+        return START_STICKY;
     }
+
 }

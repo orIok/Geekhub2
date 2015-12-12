@@ -17,6 +17,7 @@ import android.widget.Toast;
 
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.JsonHttpResponseHandler;
+import com.nemyrovskiy.o.gh2_nemyrovskyi.notification.NotifService;
 import com.nemyrovskiy.o.gh2_nemyrovskyi.settings.SettingsActivity;
 
 import org.json.JSONObject;
@@ -36,6 +37,8 @@ public class ItemListActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_item_app_bar);
         updateColor();
+        startService(new Intent(this, NotifService.class));
+
 
         if (findViewById(R.id.item_detail_container) != null) {
             mTwoPane = true;
@@ -139,6 +142,7 @@ public class ItemListActivity extends AppCompatActivity
         updateColor();
     }
 
+
     public void setData(String s) {
         downloadingData = s;
     }
@@ -158,4 +162,5 @@ public class ItemListActivity extends AppCompatActivity
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
             getWindow().setStatusBarColor(colorStatusBar);
     }
+
 }
