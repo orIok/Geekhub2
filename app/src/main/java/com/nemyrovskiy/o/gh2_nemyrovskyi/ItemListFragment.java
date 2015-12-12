@@ -15,6 +15,7 @@ import android.widget.TextView;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.nemyrovskiy.o.gh2_nemyrovskyi.UI.DummyContent;
+import com.nemyrovskiy.o.gh2_nemyrovskyi.UI.WeatherDummy;
 import com.nemyrovskiy.o.gh2_nemyrovskyi.data.WeatherDetail;
 import com.squareup.picasso.Picasso;
 
@@ -144,10 +145,10 @@ public class ItemListFragment extends ListFragment {
 
         @Override
         public View getView(int position, View convertView, final ViewGroup parent) {
-
             LayoutInflater inflater = (LayoutInflater) context
                     .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             View rowView = inflater.inflate(R.layout.rowlayout, parent, false);
+
 
             String dateString = wd.weathers[position].dtTxt;
             SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.ENGLISH);
@@ -178,6 +179,8 @@ public class ItemListFragment extends ListFragment {
 
             textView2.setText(wd.weathers[position].details[0].description);
             textView3.setText(Math.round(wd.weathers[position].main.tempMin - 273.15) + " t°");
+
+
             return rowView;
         }
     }

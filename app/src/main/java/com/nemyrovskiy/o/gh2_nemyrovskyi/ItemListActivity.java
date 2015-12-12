@@ -13,6 +13,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.JsonHttpResponseHandler;
@@ -25,7 +26,7 @@ import cz.msebera.android.httpclient.Header;
 public class ItemListActivity extends AppCompatActivity
         implements ItemListFragment.Callbacks {
 
-    public final String dataSPreferences = "SPREFERENCES_DATA";
+    public static final String dataSPreferences = "SPREFERENCES_DATA";
     public String downloadingData, realmData;
     private boolean mTwoPane;
 
@@ -71,7 +72,7 @@ public class ItemListActivity extends AppCompatActivity
 
             String dData = PreferenceManager.getDefaultSharedPreferences(getApplicationContext()).getString(dataSPreferences, "null");
             realmData = dData;
-            /*Toast.makeText(getApplicationContext(), dData, Toast.LENGTH_SHORT).show();*/
+            Toast.makeText(getApplicationContext(), dData, Toast.LENGTH_SHORT).show();
             Bundle arguments = new Bundle();
             arguments.putString(ItemDetailFragment.ITEM, dData);
             arguments.putInt(ItemDetailFragment.INTERNET_CONNECTION, 0);
@@ -136,6 +137,10 @@ public class ItemListActivity extends AppCompatActivity
     protected void onResume() {
         super.onResume();
         updateColor();
+    }
+
+    public void setData(String s) {
+        downloadingData = s;
     }
 
     private void updateColor() {

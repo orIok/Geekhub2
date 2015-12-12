@@ -14,12 +14,11 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name=".ItemListActivity"
+            android:name=".LoadingActivity"
             android:label="@string/app_name"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
-
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
@@ -36,6 +35,26 @@
             android:name=".settings.SettingsActivity"
             android:label="@string/title_activity_settings">
         </activity>
+
+        <activity
+            android:name=".ItemListActivity"
+            android:label="@string/app_name"
+            android:theme="@style/AppTheme.NoActionBar">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN"/>
+
+                <category android:name="android.intent.category.LAUNCHER"/>
+            </intent-filter>
+        </activity>
+
+        <service
+            android:name=".notification.NotifService"
+            android:enabled="true"
+            android:exported="true"
+            android:process=":myservice">
+
+        </service>
     </application>
+
 
 </manifest>
