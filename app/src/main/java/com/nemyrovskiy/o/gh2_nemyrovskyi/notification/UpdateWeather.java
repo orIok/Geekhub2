@@ -27,6 +27,7 @@ public class UpdateWeather extends IntentService {
                     public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
                         super.onSuccess(statusCode, headers, response);
                         String downloadingData;
+			String s = "hui";
                         downloadingData = response.toString();
                         SharedPreferences preferences = PreferenceManager.
                                 getDefaultSharedPreferences(UpdateWeather.this);
